@@ -34,12 +34,10 @@ collectPositions :: [String] -> Reader HeatmapOptions (Map.Map (Int, Int) Int)
 collectPositions [] = return Map.empty
 collectPositions (p:ps) = do
     previousMap <- collectPositions ps
-    let [x, y] = splitOn "," p
-    convertedX <- processPosition x
-    convertedY <- processPosition y
-    let convertedPos = (convertedX, convertedY)
-        currentAmount = fromMaybe 0 (Map.lookup convertedPos previousMap)
-    return $ Map.insert convertedPos (currentAmount + 1) previousMap
+    [x, y] <- mapM processPosition $ splitOn "," p
+    let pos = (x, y)
+        currentAmount = fromMaybe 0 (Map.lookup pos previousMap)
+    return $ Map.insert pos (currentAmount + 1) previousMap
 
 processPosition :: String -> Reader HeatmapOptions Int
 processPosition s = do
