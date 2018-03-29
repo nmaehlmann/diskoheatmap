@@ -38,6 +38,7 @@ executables:
     - split
     - containers
     - options
+    - mtl
 
 
 tests:
